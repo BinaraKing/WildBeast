@@ -345,6 +345,6 @@ function start () {
     process.exit(0)
   }
   bot.connect({
-    token: Config.bot.token
+    token: Config.bot.BOT_TOKEN
   })
 }
