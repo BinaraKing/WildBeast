@@ -26,7 +26,7 @@ function getUptime () {
 Commands.ping = {
   name: 'ping',
   help: "I'll reply to you with pong!",
-  timeout: 0,
+  timeout: 10,
   level: 0,
   fn: function (msg) {
     var initTime = new Date(msg.timestamp)
@@ -40,7 +40,7 @@ Commands.say = {
   name: 'say',
   help: 'Repeat after me.',
   aliases: ['echo', 'repeat'],
-  timeout: 0,
+  timeout: 10,
   level: 0,
   fn: function (msg, suffix, bot) {
     if (!suffix) {
@@ -64,17 +64,19 @@ Commands.purge = {
   usage: '<number>',
   aliases: ['prune'],
   noDM: true,
-  timeout: 0,
-  level: 2,
+  timeout: 30,
+  level: 0,
   fn: function (msg, suffix, bot) {
     var guildPerms = msg.author.permissionsFor(msg.guild)
     var botPerms = bot.User.permissionsFor(msg.guild)
 
-    if (!botPerms.Text.MANAGE_MESSAGES) {
+    if (!guildPerms.Text.MANAGE_MESSAGES) {
+      msg.reply('You do not have the permission to manage messages!')
+    } else if (!botPerms.Text.MANAGE_MESSAGES) {
       msg.reply('I do not have `Manage Messages` permission!')
     } else {
-      if (!suffix || isNaN(suffix) || suffix > 100000 || suffix < 0) {
-        msg.reply('Please try again with a number between **0** to **100000**.')
+      if (!suffix || isNaN(suffix) || suffix > 100 || suffix < 0) {
+        msg.reply('Please try again with a number between **0** to **100**.')
       } else {
         msg.channel.fetchMessages(suffix).then((result) => {
           var cantDelete = 0
@@ -255,7 +257,7 @@ Commands.customize = {
 Commands.info = {
   name: 'info',
   help: "I'll print some information about me.",
-  timeout: 0,
+  timeout: 10,
   level: 0,
   fn: function (msg, suffix, bot) {
     var owner
@@ -278,11 +280,11 @@ Commands.info = {
     msg.channel.sendMessage('', false, {
       color: 0x3498db,
       author: {icon_url: bot.User.avatarURL, name: `${bot.User.username}#${bot.User.discriminator} (${bot.User.id})`},
-      title: `Running on FuhrerBot version ${require('../../package.json').version}`,
+      title: `Running on WildBeast version ${require('../../package.json').version}`,
       timestamp: new Date(),
       fields: field,
-      description: '*My daddy is Binara#5278*',
-      url: 'https://www.discord.gg/gHxNEtx',
+      description: '*My developer is Dougley#6248*',
+      url: 'https://github.com/TheSharks/WildBeast',
       footer: {text: `Online for ${getUptime()}`}
     })
   }
@@ -432,7 +434,7 @@ Commands.takerole = {
 Commands.rankup = {
   name: 'rankup',
   help: 'Level up somebody\'s level by one.',
-  timeout: 0,
+  timeout: 5,
   level: 3,
   fn: function (msg, suffix, bot) {
     var Permissions = require('../databases/controllers/permissions.js')
@@ -496,10 +498,10 @@ Commands.setnsfw = {
 Commands.hello = {
   name: 'hello',
   help: "I'll respond to you with hello along with a GitHub link!",
-  timeout: 0,
+  timeout: 20,
   level: 0,
   fn: function (msg, suffix, bot) {
-    msg.channel.sendMessage('Hi ' + msg.author.username + ", I'm " + bot.User.username + ' and my daddy is Binara#5278! Come join our community at https://www.discord.gg/gHxNEtx')
+    msg.channel.sendMessage('Hi ' + msg.author.username + ", I'm " + bot.User.username + ' and I was developed by the team over at TheSharks! Improve me by contributing to my source code on GitHub: https://github.com/TheSharks/WildBeast')
   }
 }
 
@@ -542,7 +544,7 @@ Commands['server-info'] = {
   help: "I'll tell you some information about the server you're currently in.",
   aliases: ['serverinfo'],
   noDM: true,
-  timeout: 0,
+  timeout: 20,
   level: 0,
   fn: function (msg, suffix, bot) {
     // if we're not in a PM, return some info about the channel
@@ -665,7 +667,7 @@ Commands['join-server'] = {
   help: "I'll join the server you've requested me to join, as long as the invite is valid and I'm not banned of already in the requested server.",
   aliases: ['join', 'joinserver', 'invite'],
   usage: '<bot-mention> <instant-invite>',
-  level: 'master',
+  level: 0,
   fn: function (msg, suffix, bot) {
     if (bot.User.bot) {
       msg.channel.sendMessage("Sorry, bot accounts can't accept instant invites, instead, use my OAuth URL: <" + config.bot.oauth + '>')
@@ -680,7 +682,7 @@ Commands.kick = {
   help: 'Kick the user(s) out of the server!',
   noDM: true,
   usage: '<user-mentions> [reason]',
-  level: 2,
+  level: 0,
   fn: function (msg, suffix, bot) {
     if (!msg.member.permissionsFor(msg.guild).General.KICK_MEMBERS) {
       msg.reply('Sorry but you do not have permission to kick members.')
@@ -723,7 +725,7 @@ Commands.ban = {
   help: 'Swing the banhammer on someone!',
   noDM: true,
   usage: '[days (can be 0, 1, or 7)] <user-mention || user-mentions> [reason]',
-  level: 3,
+  level: 0,
   fn: function (msg, suffix, bot) {
     function safeLoop (msg, days, members, reason, list) {
       if (members.length === 0) {
@@ -772,7 +774,7 @@ Commands.hackban = {
   help: 'Swing the ban hammer on someone who isn\'t a member of the server!',
   noDM: true,
   usage: '<userid | userids> <optional reason>',
-  level: 3,
+  level: 0,
   fn: function (msg, suffix, bot) {
     if (!msg.member.permissionsFor(msg.guild).General.BAN_MEMBERS) {
       msg.reply('Sorry but you do not have permission to ban members.')
@@ -828,7 +830,7 @@ Commands.softban = {
   help: 'Bans and immediately unbans the user, removing their messages.',
   noDM: true,
   usage: '<user-mention> | <userid> <optional reason>',
-  level: 3,
+  level: 0,
   fn: function (msg, suffix, bot) {
     if (!msg.member.permissionsFor(msg.guild).General.BAN_MEMBERS) {
       msg.reply('Sorry but you do not have permission to ban members.')
@@ -938,7 +940,7 @@ Commands.softban = {
 Commands.prefix = {
   name: 'prefix',
   help: "If you, despite reading this have no clue what my prefix is, I'll tell you!",
-  timeout: 0,
+  timeout: 5,
   level: 0,
   fn: function (msg) {
     var datacontrol = require('../datacontrol')
@@ -959,8 +961,8 @@ Commands.colorrole = {
   name: 'colorrole',
   help: 'Use this to color a role you have!',
   usage: '<role name> <hexadecimal value ("#FFFFFF" or "FFFFFF")',
-  timeout: 0,
-  level: 3,
+  timeout: 5,
+  level: '3',
   fn: function (msg, suffix, bot) {
     var split = suffix.split(' ')
     var hex = split[split.length - 1]
@@ -992,168 +994,6 @@ Commands.colorrole = {
     role.commit(role.name, parseInt(hex.replace(Reg, '$1'), 16))
     msg.channel.sendMessage(`Colored the role ${role.name} with the value \`${hex}\`!`)
   }
-}
-
-Commands.masteraddrole = {
-  name: 'masteraddrole',
-  help: 'Give a role to user or users.',
-  usage: '@user @user2 rolename',
-  noDM: true,
-  aliases: ['mar', 'masteraddrole'],
-  hidden: true,
-  level: 'master',
-  fn: function (msg, suffix, bot) {
-    var guildPerms = msg.author.permissionsFor(msg.guild)
-    var botPerms = bot.User.permissionsFor(msg.guild)
-
-    let roleToAdd = suffix.split(' ').splice(msg.mentions.length).join(' ')
-    let role = msg.guild.roles.find(r => r.name === roleToAdd)
-    if (!botPerms.General.MANAGE_ROLES) {
-      msg.channel.sendMessage('')
-    } else if (msg.mentions.length === 0 && !msg.mention_everyone) {
-      msg.reply('')
-    } else if (typeof role !== 'object') {
-      msg.reply('')
-    } else {
-      msg.mentions.map(u => {
-        let guildMember = msg.guild.members.find(a => a.id === u.id)
-        guildMember.assignRole(role).then(() => {
-          msg.channel.sendMessage('')
-        }).catch(err => {
-          msg.reply('' + err)
-        })
-      })
-    }
-  }
-}
-
-Commands.mastertakerole = {
-  name: 'mastertakerole',
-  help: 'Take a role from a user or users',
-  usage: '@user @user2 rolename',
-  noDM: true,
-  aliases: ['mtr', 'mastertakerole'],
-  hidden: true,
-  level: 'master',
-  fn: function (msg, suffix, bot) {
-    var guildPerms = msg.author.permissionsFor(msg.guild)
-    var botPerms = bot.User.permissionsFor(msg.guild)
-
-    let roleToRemove = suffix.split(' ').splice(msg.mentions.length).join(' ')
-    let role = msg.guild.roles.find(r => r.name === roleToRemove)
-    if (!botPerms.General.MANAGE_ROLES) {
-      msg.channel.sendMessage('')
-    } else if (msg.mentions.length === 0 && !msg.mention_everyone) {
-      msg.reply('')
-    } else if (typeof role !== 'object') {
-      msg.reply('')
-    } else {
-      msg.mentions.map(u => {
-        let guildMember = msg.guild.members.find(a => a.id === u.id)
-        guildMember.unassignRole(role).then(() => {
-          msg.channel.sendMessage('')
-        }).catch(err => {
-          msg.reply('' + err)
-        })
-      })
-    }
-  }
-}
-
-Commands.mastercolorrole = {
-  name: 'mastercolorrole',
-  help: 'Use this to color a role you have!',
-  aliases: ['mcr', 'mastercolorrole',],
-  usage: '<role name> <hexadecimal value ("#FFFFFF" or "FFFFFF")',
-  timeout: 0,
-  hidden: true,
-  level: 'master',
-  fn: function (msg, suffix, bot) {
-    var split = suffix.split(' ')
-    var hex = split[split.length - 1]
-    split.pop()
-    var role = msg.guild.roles.find(r => r.name === split.join(' '))
-    var Reg = /^#?([\da-fA-F]{6})$/
-    var botPerms = bot.User.permissionsFor(msg.guild)
-    if (typeof role !== 'object' || hex.length === 0) {
-      msg.reply('')
-      return
-    }
-    if (!Reg.test(hex)) {
-      msg.reply('')
-      return
-    }
-    if (typeof msg.member.roles.find(r => r.id === role.id) !== 'object' && msg.author.id !== msg.guild.owner.id) {
-      msg.reply('')
-      return
-    }
-    if (!botPerms.General.MANAGE_ROLES) {
-      msg.reply('')
-      return
-    }
-    var botRole = bot.User.memberOf(msg.guild).roles.sort(function (a, b) { return a.position < b.position })[0]
-    if (role.position >= botRole.position) {
-      msg.reply('')
-      return
-    }
-    role.commit(role.name, parseInt(hex.replace(Reg, '$1'), 16))
-  }
-}
-
-Commands.getchannel = {
-    name: 'getchannel',
-    help: 'Gets and replies with a raw channel object from the given ID.',
-    level: 'master',
-    fn: function (msg, suffix, bot) {
-        const util = require('util')
-        let str = util.inspect(bot.Channels.get(suffix), {
-            depth: 1
-        })
-        msg.channel.sendMessage('```xl\n' + str + '```')
-    }
-}
-
-Commands.getuser = {
-    name: 'getuser',
-    help: 'Gets and replies with a raw user object from the given ID.',
-	hidden: true,
-    level: 'master',
-    fn: function (msg, suffix, bot) {
-        const util = require('util')
-        let str = util.inspect(bot.Users.get(suffix), {
-            depth: 1
-        })
-        msg.channel.sendMessage('```xl\n' + str + '```')
-    }
-}
-
-Commands.getguild = {
-    name: 'getguild',
-    help: 'Gets and replies with a raw guild from the given ID.',
-	hidden: true,
-    level: 'master',
-    fn: function (msg, suffix, bot) {
-        const util = require('util')
-        let str = util.inspect(bot.Guilds.get(suffix), {
-            depth: 1
-        })
-        msg.channel.sendMessage('```xl\n' + str + '```')
-    }
-}
-
-Commands.masternickname = {
-    name: 'masternickname',
-    help: 'Nicknames everyone in a server, RAID COMMAND',
-	aliases: ['mnn'],
-	hidden: true,
-    level: 'master',
-    fn: function (msg, suffix, bot) {
-        const util = require('util')
-        let str = util.inspect(msg.guild.members.forEach(m => m.setNickname(suffix)), {
-            depth: 1
-        })
-        msg.channel.sendMessage('```xl\n' + str + '```')
-    }
 }
 
 exports.Commands = Commands
