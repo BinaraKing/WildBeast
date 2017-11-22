@@ -10,7 +10,7 @@
     "user": "admin"
   },
   "settings": {
-    "prefix": "anything can be entered as the global prefix, refer to installation guide",
+    "prefix": "!",
     "autodeletemsg": true,
     "deleteTimeout": 3000,
     "deleteTimeoutLong": 6000,
