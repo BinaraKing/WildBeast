@@ -1,6 +1,6 @@
 {
   "bot": {
-    "token": "Bot token",
+    "BOT_TOKEN": "Bot token",
     "oauth": "Bot OAuth URL, see wiki"
   },
   "database": {
