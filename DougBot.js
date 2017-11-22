@@ -344,7 +344,7 @@ function start () {
     Logger.error('Config error: ' + e)
     process.exit(0)
   }
-  bot.connect({
-    process.env.BOT_TOKEN
+bot.connect({
+    token: process.env.BOT_TOKEN
   })
 }
