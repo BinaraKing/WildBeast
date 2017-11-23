@@ -1,10 +1,4 @@
-let Config
-try {
-  Config = require('../../config.json')
-} catch (e) {
-  console.log('\nEncountered an error while trying to load the config file, please resolve this issue run the last command again.\n\n' + e.message)
-  process.exit()
-}
+let Config = require('./config.js').config
 let Dash = require('rethinkdbdash')
 let r = new Dash({
   user: Config.database.user,

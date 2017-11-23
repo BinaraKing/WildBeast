@@ -1,7 +1,7 @@
 'use strict'
 var Winston = require('winston')
 var path = require('path')
-var config = require('../../config.json')
+var config = require('./config.js').config
 var Elasticsearch = require('winston-elasticsearch')
 
 Winston.emitErrs = true

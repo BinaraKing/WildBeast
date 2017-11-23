@@ -1,5 +1,5 @@
 var cmdLastExecutedTime = {}
-const Config = require('../../config.json')
+const Config = require('./config.js').config
 
 exports.check = function (cmd, server, user) {
   return new Promise(function (resolve) {

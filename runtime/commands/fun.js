@@ -2,7 +2,7 @@ var Commands = []
 var Logger = require('../internal/logger.js').Logger
 var Giphy = require('../giphy.js')
 var Cleverbot = require('cleverbot.io')
-var config = require('../../config.json')
+var config = require('../internal/config.js').config
 var request = require('superagent')
 var cleverbot = new Cleverbot(config.api_keys.cleverbot_user, config.api_keys.cleverbot_key)
 

@@ -1,14 +1,7 @@
 'use strict'
 process.title = 'WildBeast'
 
-var Config
-
-try {
-  Config = require('./config.json')
-} catch (e) {
-  console.log('\nWildBeast encountered an error while trying to load the config file, please resolve this issue and restart WildBeast\n\n' + e.message)
-  process.exit()
-}
+var Config = require('./runtime/internal/config.js').config
 
 var argv = require('minimist')(process.argv.slice(2))
 var Logger = require('./runtime/internal/logger.js').Logger
@@ -339,12 +332,12 @@ process.on('unhandledRejection', (reason, p) => {
 
 function start () {
   try {
-    Config = require('./config.json')
+    Config = require('./runtime/internal/config.js').config
   } catch (e) {
     Logger.error('Config error: ' + e)
     process.exit(0)
   }
-bot.connect({
-    token: process.env.BOT_TOKEN
+  bot.connect({
+    token: Config.bot.token
   })
 }

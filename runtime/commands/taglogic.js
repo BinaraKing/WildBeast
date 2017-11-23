@@ -1,7 +1,7 @@
 var Commands = []
 const TagScript = require('tagscript')
 let compiler = new TagScript()
-var Config = require('../../config.json')
+var Config = require('../internal/config.js').config
 var Dash = require('rethinkdbdash')
 var r = new Dash({
   user: Config.database.user,

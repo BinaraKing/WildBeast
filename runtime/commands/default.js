@@ -1,6 +1,6 @@
 var Commands = []
 var request = require('superagent')
-var config = require('../../config.json')
+var config = require('../internal/config.js').config
 var Logger = require('../internal/logger.js').Logger
 var argv = require('minimist')(process.argv.slice(2))
 var bugsnag = require('bugsnag')

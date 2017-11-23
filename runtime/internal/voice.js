@@ -7,7 +7,7 @@ var DL = require('ytdl-core')
 var YT = require('youtube-dl')
 var fs = require('fs')
 var Logger = require('./logger.js').Logger
-var Config = require('../../config.json')
+var Config = require('./config.js').config
 var bugsnag = require('bugsnag')
 bugsnag.register(Config.api_keys.bugsnag)
 

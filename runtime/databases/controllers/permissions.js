@@ -1,5 +1,5 @@
 'use strict'
-var Config = require('../../../config.json')
+var Config = require('../../internal/config.js').config
 var Logger = require('../../internal/logger.js').Logger
 var Dash = require('rethinkdbdash')
 var r = new Dash({

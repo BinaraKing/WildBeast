@@ -1,4 +1,4 @@
-var Config = require('../../config.json')
+var Config = require('./config.js').config
 var Websocket = require('ws')
 var Bezerk
 var Logger = require('./logger.js').Logger
